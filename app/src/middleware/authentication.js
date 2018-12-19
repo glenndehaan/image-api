@@ -8,7 +8,15 @@ const config = require("../config");
  * @param next
  */
 module.exports = (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+
     if(config.lockedPaths.includes(req.originalUrl)) {
+        if(req.method === "OPTIONS") {
+            next();
+            return;
+        }
+
         if(typeof req.headers.authorization !== "undefined") {
             const token = req.headers.authorization.split("Bearer ")[1];
 
