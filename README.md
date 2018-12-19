@@ -34,6 +34,7 @@ To increase the logging change the logger level in the `config.json` file from `
 ```
 
 - GET - /api/random
+- GET - /api/random/{type} [type should be equal to extension]
 
 ## License
 
