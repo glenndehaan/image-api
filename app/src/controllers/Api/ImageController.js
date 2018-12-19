@@ -48,6 +48,8 @@ class ImageController extends baseController {
     }
 
     /**
+     * Retrieve an image by type
+     *
      * @param req
      * @param res
      */
@@ -56,7 +58,7 @@ class ImageController extends baseController {
         const allowedTypes = ['jpg', 'png', 'gif'];
 
         if (allowedTypes.includes(type) === false) {
-            return this.jsonResponse(res, 200, { message: `Type ${type} not allowed` });
+            return this.jsonResponse(res, 415, { message: `Type ${type} not allowed` });
         }
 
         // Create regex for given type
@@ -72,7 +74,7 @@ class ImageController extends baseController {
 
         // If no types are found, respond with a message
         if (files.length === 0) {
-            return this.jsonResponse(res, 200, { message: `no files available with type ${type}` });
+            return this.jsonResponse(res, 404, { message: `no files available with type ${type}` });
         }
 
         // Get random image key
