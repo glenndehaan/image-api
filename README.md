@@ -1,6 +1,6 @@
 # Image API
 
-TODO: 
+A simple REST API for posting images and requesting images
 
 ## Structure
 - NodeJS
