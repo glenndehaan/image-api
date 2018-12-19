@@ -1,0 +1,73 @@
+{
+  "name": "image-api",
+  "version": "0.0.0",
+  "description": "NPM packages for image-api",
+  "private": true,
+  "scripts": {
+    "debug": "cd ./app/src && node --inspect-brk=0.0.0.0:5858 ./server.js",
+    "start": "cd ./app/src && node ./server.js",
+    "dev": "cd ./app/src && nodemon -L --watch ./ ./server.js",
+    "build": "pkg ./package.json --targets latest-linux-x64,latest-macos-x64,latest-win-x64 --out-path ./app/dist",
+    "lint": "eslint -c ./package.json ./",
+    "madge": "madge ./app/src && madge ./app/src --circular"
+  },
+  "pkg": {
+    "assets": [
+      "_scripts/config/*",
+      "app/src/config/version/version.txt",
+      "app/src/**/*.js",
+      "LICENCE",
+      "README.md"
+    ]
+  },
+  "bin": "app/src/bundle.js",
+  "author": "Glenn de Haan",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "env": {
+      "node": true
+    },
+    "rules": {
+      "no-console": 0,
+      "comma-dangle": [
+        "error",
+        "never"
+      ],
+      "indent": [
+        "error",
+        4
+      ]
+    },
+    "extends": [
+      "eslint:recommended"
+    ]
+  },
+  "eslintIgnore": [
+    "public/dist"
+  ],
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
+    "cross-env": "^5.2.0",
+    "deepmerge": "^2.2.1",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "pkg": "^4.3.4",
+    "select-random-file": "^1.1.0",
+    "simple-node-logger": "^0.93.40",
+    "size-plugin": "^1.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.8.0",
+    "eslint-loader": "^2.0.0",
+    "madge": "^3.3.0",
+    "nodemon": "^1.18.6"
+  }
+}

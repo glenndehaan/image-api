@@ -1,0 +1,11 @@
+{
+  "application": {
+    "uploads": "../../../../public/uploads",
+    "host": "0.0.0.0",
+    "port": 3543
+  },
+  "logger": {
+    "location": "./log",
+    "level": "trace"
+  }
+}
