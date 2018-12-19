@@ -12,9 +12,7 @@ module.exports = {
         basePath: "/"
     },
     lockedPaths: [
-        "/api/save",
-        "/api/save/",
-        "/api/random",
-        "/api/random/"
+        "save",
+        "random"
     ]
 };

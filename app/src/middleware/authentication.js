@@ -11,7 +11,9 @@ module.exports = (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
 
-    if (config.lockedPaths.includes(req.originalUrl)) {
+    const urlParts = req.originalUrl.split("/");
+
+    if (config.lockedPaths.includes(urlParts[2])) {
         if (req.method === "OPTIONS") {
             next();
             return;

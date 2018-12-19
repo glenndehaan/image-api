@@ -44,7 +44,9 @@ class ImageController extends baseController {
             return;
         }
 
-        this.jsonResponse(res, 406, {'message': 'Field error!'});
+        this.jsonResponse(res, 406, {
+            message: 'Field error!'
+        });
     }
 
     /**
@@ -73,9 +75,9 @@ class ImageController extends baseController {
 
             log.info(`[API][IMAGE] Random file: ${file}`);
             this.jsonResponse(res, 200, {
-                'image': image,
-                'extension': path.extname(file).split(".")[1],
-                'name': file.split(".")[0]
+                extension: path.extname(file).split(".")[1],
+                name: file.split(".")[0],
+                image
             });
         });
     }
@@ -91,23 +93,21 @@ class ImageController extends baseController {
         const allowedTypes = ['jpg', 'png', 'gif'];
 
         if (allowedTypes.includes(type) === false) {
-            return this.jsonResponse(res, 415, {message: `Type ${type} not allowed`});
+            return this.jsonResponse(res, 415, {message: `Type: ${type} not allowed`});
         }
 
         // Create regex for given type
         const regex = new RegExp(type, 'ig');
 
         // Get images from directory
-        const images = fs.readdirSync(
-            `${dev ? __dirname : process.cwd()}/${config.application.uploads}`
-        );
+        const images = fs.readdirSync(`${dev ? __dirname : process.cwd()}/${config.application.uploads}`);
 
         // Get files with given type
         const files = images.filter(file => file.match(regex));
 
         // If no types are found, respond with a message
         if (files.length === 0) {
-            return this.jsonResponse(res, 404, {message: `no files available with type ${type}`});
+            return this.jsonResponse(res, 404, {message: `No files available with type: ${type}`});
         }
 
         // Get random image key
@@ -115,9 +115,7 @@ class ImageController extends baseController {
         const file = files[randomIndex];
 
         // read binary data
-        const bitmap = fs.readFileSync(
-            `${dev ? __dirname : process.cwd()}/${config.application.uploads}/${file}`
-        );
+        const bitmap = fs.readFileSync(`${dev ? __dirname : process.cwd()}/${config.application.uploads}/${file}`);
 
         // convert binary data to base64 encoded string
         const image = new Buffer(bitmap).toString('base64');
