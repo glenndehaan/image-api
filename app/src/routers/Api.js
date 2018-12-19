@@ -26,9 +26,15 @@ const routes = [
         method: 'get',
         controller: 'Image',
         action: 'random'
+    },
+    {
+        route: '/random/:type',
+        method: 'get',
+        controller: 'Image',
+        action: 'getRandomByType'
     }
 ];
 
 routerUtils.routesToRouter(router, routes, 'Api');
 
-module.exports = {router, routes};
+module.exports = { router, routes };
