@@ -15,3 +15,4 @@ npm-debug.log
 # App
 *.log
 config.json
+public/uploads/*

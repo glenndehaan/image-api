@@ -7,5 +7,12 @@
   "logger": {
     "location": "./log",
     "level": "trace"
+  },
+  "authentication": [
+    "atoken"
+  ],
+  "endpoints": {
+    "save": true,
+    "random": true
   }
 }

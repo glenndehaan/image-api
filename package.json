@@ -61,12 +61,10 @@
     "express": "^4.16.4",
     "pkg": "^4.3.4",
     "select-random-file": "^1.1.0",
-    "simple-node-logger": "^0.93.40",
-    "size-plugin": "^1.0.1"
+    "simple-node-logger": "^0.93.40"
   },
   "devDependencies": {
     "eslint": "^5.8.0",
-    "eslint-loader": "^2.0.0",
     "madge": "^3.3.0",
     "nodemon": "^1.18.6"
   }

@@ -15,7 +15,7 @@ const web = require("./modules/web");
 const dev = process.env.NODE_ENV !== 'production';
 
 log.info("[SYSTEM] App running");
-log.info(`[SYSTEM] Support and Help: https://github.com/glenndehaan/`);
+log.info(`[SYSTEM] Support and Help: https://github.com/glenndehaan/image-api`);
 
 /**
  * Check if this is the first time running the app

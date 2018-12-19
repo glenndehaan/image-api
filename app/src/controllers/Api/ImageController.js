@@ -22,6 +22,11 @@ class ImageController extends baseController {
      * @param res
      */
     saveAction(req, res) {
+        if(!config.endpoints.save) {
+            this.jsonResponse(res, 423, { 'message': 'Endpoint closed!' });
+            return;
+        }
+
         if(req.body.image && req.body.extension && req.body.name) {
             const base64Data = req.body.image.replace(/^data:image\/jpeg;base64,/, "").replace(/^data:image\/png;base64,/, "");
 
@@ -49,6 +54,11 @@ class ImageController extends baseController {
      * @param res
      */
     randomAction(req, res) {
+        if(!config.endpoints.random) {
+            this.jsonResponse(res, 423, { 'message': 'Endpoint closed!' });
+            return;
+        }
+
         randomFile(`${dev ? __dirname : process.cwd()}/${config.application.uploads}`, (err, file) => {
             if(err) {
                 log.error(`[API][IMAGE] Error: ${err}`);
