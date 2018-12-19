@@ -12,6 +12,7 @@ const compression = require('compression');
 const log = require("./logger");
 const config = require("../config");
 const apiRouter = require('../routers/Api');
+const authentication = require('../middleware/authentication');
 
 class web {
     /**
@@ -46,6 +47,11 @@ class web {
             log.trace(`[WEB][REQUEST]: ${req.originalUrl}`);
             next();
         });
+
+        /**
+         * Authentication
+         */
+        app.use(authentication);
 
         /**
          * Configure routers

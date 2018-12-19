@@ -10,5 +10,11 @@ module.exports = {
     application: {
         env: dev ? " (local)" : "",
         basePath: "/"
-    }
+    },
+    lockedPaths: [
+        "/api/save",
+        "/api/save/",
+        "/api/random",
+        "/api/random/"
+    ]
 };
