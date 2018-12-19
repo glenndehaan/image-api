@@ -23,7 +23,7 @@ class ImageController extends baseController {
      */
     saveAction(req, res) {
         if (!config.endpoints.save) {
-            this.jsonResponse(res, 423, { 'message': 'Endpoint closed!' });
+            this.jsonResponse(res, 423, {'message': 'Endpoint closed!'});
             return;
         }
 
@@ -33,18 +33,51 @@ class ImageController extends baseController {
             fs.writeFile(`${dev ? __dirname : process.cwd()}/${config.application.uploads}/${req.body.name}.${req.body.extension}`, base64Data, 'base64', (err) => {
                 if (err) {
                     log.error(`[API][IMAGE] Error: ${err}`);
-                    this.jsonResponse(res, 423, { 'message': 'Error saving image!' });
+                    this.jsonResponse(res, 423, {'message': 'Error saving image!'});
                     return;
                 }
 
                 log.info(`[API][IMAGE] Saved! ${req.body.name}.${req.body.extension}`);
-                this.jsonResponse(res, 200, { 'message': 'Image saved!' });
+                this.jsonResponse(res, 200, {'message': 'Image saved!'});
             });
 
             return;
         }
 
-        this.jsonResponse(res, 406, { 'message': 'Field error!' });
+        this.jsonResponse(res, 406, {'message': 'Field error!'});
+    }
+
+    /**
+     * Returns a random image from the filesystem
+     *
+     * @param req
+     * @param res
+     */
+    randomAction(req, res) {
+        if (!config.endpoints.random) {
+            this.jsonResponse(res, 423, {'message': 'Endpoint closed!'});
+            return;
+        }
+
+        randomFile(`${dev ? __dirname : process.cwd()}/${config.application.uploads}`, (err, file) => {
+            if (err) {
+                log.error(`[API][IMAGE] Error: ${err}`);
+                this.jsonResponse(res, 423, {'message': 'Error loading an image!'});
+                return;
+            }
+
+            // read binary data
+            const bitmap = fs.readFileSync(`${dev ? __dirname : process.cwd()}/${config.application.uploads}/${file}`);
+            // convert binary data to base64 encoded string
+            const image = new Buffer(bitmap).toString('base64');
+
+            log.info(`[API][IMAGE] Random file: ${file}`);
+            this.jsonResponse(res, 200, {
+                'image': image,
+                'extension': path.extname(file).split(".")[1],
+                'name': file.split(".")[0]
+            });
+        });
     }
 
     /**
@@ -54,11 +87,11 @@ class ImageController extends baseController {
      * @param res
      */
     getRandomByTypeAction(req, res) {
-        const { type } = req.params;
+        const {type} = req.params;
         const allowedTypes = ['jpg', 'png', 'gif'];
 
         if (allowedTypes.includes(type) === false) {
-            return this.jsonResponse(res, 415, { message: `Type ${type} not allowed` });
+            return this.jsonResponse(res, 415, {message: `Type ${type} not allowed`});
         }
 
         // Create regex for given type
@@ -74,7 +107,7 @@ class ImageController extends baseController {
 
         // If no types are found, respond with a message
         if (files.length === 0) {
-            return this.jsonResponse(res, 404, { message: `no files available with type ${type}` });
+            return this.jsonResponse(res, 404, {message: `no files available with type ${type}`});
         }
 
         // Get random image key
@@ -94,39 +127,6 @@ class ImageController extends baseController {
             extension: type,
             name: file,
             image
-        });
-    }
-
-    /**
-     * Returns a random image from the filesystem
-     *
-     * @param req
-     * @param res
-     */
-    randomAction(req, res) {
-        if (!config.endpoints.random) {
-            this.jsonResponse(res, 423, { 'message': 'Endpoint closed!' });
-            return;
-        }
-
-        randomFile(`${dev ? __dirname : process.cwd()}/${config.application.uploads}`, (err, file) => {
-            if (err) {
-                log.error(`[API][IMAGE] Error: ${err}`);
-                this.jsonResponse(res, 423, { 'message': 'Error loading an image!' });
-                return;
-            }
-
-            // read binary data
-            const bitmap = fs.readFileSync(`${dev ? __dirname : process.cwd()}/${config.application.uploads}/${file}`);
-            // convert binary data to base64 encoded string
-            const image = new Buffer(bitmap).toString('base64');
-
-            log.info(`[API][IMAGE] Random file: ${file}`);
-            this.jsonResponse(res, 200, {
-                'image': image,
-                'extension': path.extname(file).split(".")[1],
-                'name': file.split(".")[0]
-            });
         });
     }
 }

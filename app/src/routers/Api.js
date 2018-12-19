@@ -37,4 +37,4 @@ const routes = [
 
 routerUtils.routesToRouter(router, routes, 'Api');
 
-module.exports = { router, routes };
+module.exports = {router, routes};
