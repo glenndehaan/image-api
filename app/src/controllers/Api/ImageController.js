@@ -28,7 +28,7 @@ class ImageController extends baseController {
         }
 
         if (req.body.image && req.body.extension && req.body.name) {
-            const base64Data = req.body.image.replace(/^data:image\/jpeg;base64,/, "").replace(/^data:image\/png;base64,/, "");
+            const base64Data = req.body.image.replace(/^data:image\/jpeg;base64,/, "").replace(/^data:image\/png;base64,/, "").replace(/^data:image\/gif;base64,/, "");
 
             fs.writeFile(`${dev ? __dirname : process.cwd()}/${config.application.uploads}/${req.body.name}.${req.body.extension}`, base64Data, 'base64', (err) => {
                 if (err) {
