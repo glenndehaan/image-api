@@ -11,7 +11,11 @@
   "authentication": [
     "atoken"
   ],
+  "users": {
+    "admin": "root"
+  },
   "endpoints": {
+    "url": true,
     "save": true,
     "random": true
   }

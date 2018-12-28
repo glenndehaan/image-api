@@ -1,9 +1,12 @@
 const fs = require("fs");
 const path = require('path');
 const randomFile = require('select-random-file');
+const fetch = require('node-fetch');
+
 const config = require("../../config");
 const log = require("../../modules/logger");
 const baseController = require('./BaseController');
+const {checkStatus, getFileData, toBase64} = require('../../utils/Image');
 
 /**
  * Check if we are using the dev version
@@ -13,6 +16,46 @@ const dev = process.env.NODE_ENV !== 'production';
 class ImageController extends baseController {
     constructor() {
         super();
+    }
+
+    /**
+     * Saves images from a URL
+     *
+     * @param req
+     * @param res
+     */
+    urlAction(req, res) {
+        if (!config.endpoints.url) {
+            this.jsonResponse(res, 423, {'message': 'Endpoint closed!'});
+            return;
+        }
+
+        if (req.query.location) {
+            fetch(req.query.location)
+                .then(response => checkStatus(response, req.query.location) && response.arrayBuffer())
+                .then(buffer => getFileData(req.query.location, buffer))
+                .then(toBase64)
+                .then(async ({ base64String, name, extension }) => {
+                    const base64Data = base64String.replace(/^data:image\/jpeg;base64,/, "").replace(/^data:image\/png;base64,/, "").replace(/^data:image\/gif;base64,/, "");
+
+                    fs.writeFile(`${dev ? __dirname : process.cwd()}/${config.application.uploads}/${name}.${extension}`, base64Data, 'base64', (err) => {
+                        if (err) {
+                            log.error(`[API][IMAGE] Error: ${err}`);
+                            this.jsonResponse(res, 423, {'message': 'Error saving image!'});
+                            return;
+                        }
+
+                        log.info(`[API][IMAGE] Saved! ${name}.${extension}`);
+                        this.jsonResponse(res, 200, {'message': 'Image saved!'});
+                    });
+                })
+                .catch(e => {});
+            return;
+        }
+
+        this.jsonResponse(res, 406, {
+            message: 'Field error!'
+        });
     }
 
     /**

@@ -59,6 +59,8 @@
     "deepmerge": "^2.2.1",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-basic-auth": "^1.1.6",
+    "node-fetch": "^2.3.0",
     "pkg": "^4.3.4",
     "select-random-file": "^1.1.0",
     "simple-node-logger": "^0.93.40"

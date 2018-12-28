@@ -16,6 +16,13 @@ const routes = [
         action: 'index'
     },
     {
+        route: '/url',
+        method: 'get',
+        controller: 'Image',
+        action: 'url',
+        secured: true
+    },
+    {
         route: '/save',
         method: 'post',
         controller: 'Image',

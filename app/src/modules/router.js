@@ -14,7 +14,7 @@ class router {
             const controller = route.controller.charAt(0).toUpperCase() + route.controller.slice(1);
             let auth = '';
             if (route.secured) {
-                auth = `basicAuth({users:{${config.authentication.username}:'${config.authentication.password}'},challenge: true}),`;
+                auth = `basicAuth({users:${JSON.stringify(config.users)},challenge: true}),`;
             }
 
             eval(
