@@ -37,15 +37,16 @@ class ImageController extends baseController {
                 .then(toBase64)
                 .then(async ({ base64String, name, extension }) => {
                     const base64Data = base64String.replace(/^data:image\/jpeg;base64,/, "").replace(/^data:image\/png;base64,/, "").replace(/^data:image\/gif;base64,/, "");
+                    const date = new Date();
 
-                    fs.writeFile(`${dev ? __dirname : process.cwd()}/${config.application.uploads}/${name}.${extension}`, base64Data, 'base64', (err) => {
+                    fs.writeFile(`${dev ? __dirname : process.cwd()}/${config.application.uploads}/${name}-${date.getTime()}.${extension}`, base64Data, 'base64', (err) => {
                         if (err) {
                             log.error(`[API][IMAGE] Error: ${err}`);
                             this.jsonResponse(res, 423, {'message': 'Error saving image!'});
                             return;
                         }
 
-                        log.info(`[API][IMAGE] Saved! ${name}.${extension}`);
+                        log.info(`[API][IMAGE] Saved! ${name}-${date.getTime()}.${extension}`);
                         this.jsonResponse(res, 200, {'message': 'Image saved!'});
                     });
                 })
